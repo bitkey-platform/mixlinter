@@ -9,6 +9,7 @@ references:
       ORG_PATH: github.com/bitkey-platform
       REPO_PATH: "${ORG_PATH}/${CIRCLE_PROJECT_REPONAME}"
       BASH_ENV: .circleci/checktag.sh
+      MICROBADGER_WEBHOOK_TOKEN: LytL1rwIky-_kcMQbHYMdWtp9FU=
   install_docker_client: &install_docker_client
     run:
       name: Install docker client
@@ -69,7 +70,7 @@ jobs:
             echo $DOCKER_PASS | base64 -d | docker login -u $DOCKER_USER --password-stdin
             docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:${CIRCLE_TAG}
             docker push ${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}:latest
-            curl -X POST https://hooks.microbadger.com/images/${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}
+            curl -X POST https://hooks.microbadger.com/images/${DOCKERHUB_ORG_NAME}/${CIRCLE_PROJECT_REPONAME}/${MICROBADGER_WEBHOOK_TOKEN}
 
 workflows:
   version: 2
